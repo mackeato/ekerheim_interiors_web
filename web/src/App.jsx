@@ -1,6 +1,11 @@
 import { useState, useEffect } from 'react';
 import bgPatternSand from './assets/abstract_pattern_sand.png';
 
+// Hardcoded images for Github Pages
+import img1 from './assets/project_ostermalm.png';
+import img2 from './assets/project_sodermalm.png';
+import img3 from './assets/project_vasastan.png';
+
 // Pages
 import Home from './pages/Home';
 import About from './pages/About';
@@ -66,18 +71,13 @@ export default function App() {
     fetch('http://localhost:3001/api/projects')
       .then(res => res.json())
       .then(data => {
-        const processedData = data.map(proj => {
-          if (!proj.images) return proj;
-          const newImages = proj.images.map(img => {
-             if (img.includes('http://localhost:3001/uploads/')) {
-                 return img.replace('http://localhost:3001/uploads/', import.meta.env.BASE_URL + 'uploads/');
-             }
-             if (img.startsWith('/uploads/')) {
-                 return import.meta.env.BASE_URL + img.slice(1);
-             }
-             return img;
-          });
-          return { ...proj, images: newImages };
+        // HARDCODED OVERRIDE: Assign bundled images sequentially so they work natively on Github Pages
+        const hardcodedImages = [img1, img2, img3];
+        
+        const processedData = data.map((proj, idx) => {
+          // Wrap the image in an array as expected by downstream components
+          const safeIdx = Math.min(idx, hardcodedImages.length - 1);
+          return { ...proj, images: [hardcodedImages[safeIdx]] };
         });
         setProjects(processedData);
       })
