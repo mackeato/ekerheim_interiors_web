@@ -1,0 +1,290 @@
+:root {
+    --bg-color: #0d1310;
+    --text-main: #e2f0e8;
+    --text-muted: #94a39b;
+    --accent: #2e8b57;
+    --card-bg: rgba(255, 255, 255, 0.03);
+    --card-border: rgba(255, 255, 255, 0.1);
+    --modal-bg: rgba(13, 19, 16, 0.85);
+    --card-hover: rgba(46, 139, 87, 0.15);
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-main);
+    font-family: 'Outfit', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+}
+
+header {
+    text-align: center;
+    padding: 4rem 2rem 2rem;
+    animation: fadeInDown 1s ease-out;
+}
+
+header h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 3.5rem;
+    margin-bottom: 0.5rem;
+    color: #fff;
+    text-shadow: 0 4px 20px rgba(46, 139, 87, 0.5);
+}
+
+header p {
+    color: var(--text-muted);
+    font-size: 1.2rem;
+    font-weight: 300;
+}
+
+.category-filters {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+    padding: 0 2rem 2rem;
+    max-width: 1400px;
+    margin: 0 auto;
+    animation: fadeInDown 1s ease-out 0.2s backwards;
+}
+
+.filter-btn {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    color: var(--text-muted);
+    padding: 0.6rem 1.5rem;
+    border-radius: 30px;
+    font-size: 1rem;
+    font-family: 'Outfit', sans-serif;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+}
+
+.filter-btn:hover {
+    color: #fff;
+    border-color: var(--accent);
+    background: rgba(46, 139, 87, 0.2);
+}
+
+.filter-btn.active {
+    background: var(--accent);
+    color: #fff;
+    border-color: var(--accent);
+    box-shadow: 0 4px 15px rgba(46, 139, 87, 0.4);
+}
+
+.plant-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 2.5rem;
+    padding: 2rem 4rem 4rem;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.plant-card {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 16px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    backdrop-filter: blur(10px);
+    opacity: 0;
+    transform: translateY(30px);
+    animation: slideUp 0.6s forwards;
+}
+
+.plant-card:nth-child(1) { animation-delay: 0.1s; }
+.plant-card:nth-child(2) { animation-delay: 0.2s; }
+.plant-card:nth-child(3) { animation-delay: 0.3s; }
+.plant-card:nth-child(4) { animation-delay: 0.4s; }
+
+.plant-card:hover {
+    transform: translateY(-10px) scale(1.02);
+    border-color: var(--accent);
+    background: var(--card-hover);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+}
+
+.card-img {
+    width: 100%;
+    height: 350px;
+    object-fit: cover;
+    transition: transform 0.6s ease;
+}
+
+.plant-card:hover .card-img {
+    transform: scale(1.05);
+}
+
+.card-content {
+    padding: 1.5rem;
+}
+
+.card-title {
+    font-size: 1.6rem;
+    font-weight: 600;
+    margin-bottom: 0.25rem;
+}
+
+.card-scientific {
+    font-size: 0.95rem;
+    color: var(--accent);
+    font-style: italic;
+    margin-bottom: 0.5rem;
+}
+
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: var(--modal-bg);
+    backdrop-filter: blur(15px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.4s ease;
+}
+
+.modal:not(.hidden) {
+    opacity: 1;
+    visibility: visible;
+}
+
+.modal-content {
+    background: #111a15;
+    border: 1px solid var(--card-border);
+    border-radius: 24px;
+    width: 90%;
+    max-width: 950px;
+    max-height: 90vh;
+    overflow-y: auto;
+    position: relative;
+    transform: scale(0.9);
+    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    box-shadow: 0 20px 60px rgba(0,0,0,0.8);
+}
+
+.modal:not(.hidden) .modal-content {
+    transform: scale(1);
+}
+
+.close-btn {
+    position: absolute;
+    top: 1.5rem;
+    right: 2rem;
+    font-size: 2.5rem;
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: color 0.3s;
+    z-index: 10;
+}
+
+.close-btn:hover {
+    color: #fff;
+}
+
+.modal-body {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.modal-image-container {
+    flex: 1.2;
+    min-width: 300px;
+}
+
+.modal-image-container img {
+    width: 100%;
+    height: 100%;
+    min-height: 480px;
+    object-fit: cover;
+    display: block;
+}
+
+.modal-info {
+    flex: 1;
+    min-width: 300px;
+    padding: 3rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+#modal-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.8rem;
+    margin-bottom: 0.2rem;
+    color: #fff;
+    line-height: 1.1;
+}
+
+#modal-scientific {
+    color: var(--accent);
+    font-size: 1.2rem;
+    font-style: italic;
+    margin-bottom: 1.5rem;
+}
+
+#modal-desc {
+    line-height: 1.7;
+    color: var(--text-muted);
+    margin-bottom: 2rem;
+    font-size: 1.05rem;
+}
+
+.care-instructions {
+    background: rgba(255, 255, 255, 0.02);
+    padding: 1.5rem;
+    border-radius: 12px;
+    border: 1px solid var(--card-border);
+}
+
+.care-instructions h3 {
+    margin-bottom: 1.2rem;
+    font-size: 1.3rem;
+    color: #fff;
+}
+
+.care-item {
+    margin-bottom: 0.8rem;
+    color: var(--text-main);
+    font-size: 1rem;
+}
+
+.care-item strong {
+    color: var(--accent);
+    font-weight: 600;
+    margin-right: 0.5rem;
+}
+
+@keyframes fadeInDown {
+    from { opacity: 0; transform: translateY(-30px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideUp {
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@media (max-width: 768px) {
+    .modal-body { flex-direction: column; }
+    .modal-image-container img { height: 350px; min-height: 350px; }
+    .modal-info { padding: 2.5rem 2rem; }
+    header { padding: 3rem 1.5rem 1rem; }
+    header h1 { font-size: 2.5rem; }
+    .plant-grid { padding: 1.5rem; }
+}

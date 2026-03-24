@@ -1,0 +1,77 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer utilities {
+  .glass-panel {
+    @apply bg-white/25 backdrop-blur-[40px] border border-white/30 shadow-[0_30px_80px_rgba(78,78,74,0.06)];
+    border-top-color: rgba(255, 255, 255, 0.7);
+    border-left-color: rgba(255, 255, 255, 0.5);
+    box-shadow: 
+      0 30px 80px rgba(78, 78, 74, 0.08), 
+      inset 0 0 0 1px rgba(255, 255, 255, 0.15);
+  }
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+}
+
+/* Animations */
+.reveal-up {
+  opacity: 0;
+  transform: translateY(50px);
+  transition: opacity 1.4s cubic-bezier(0.16, 1, 0.3, 1), transform 1.4s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, transform;
+}
+.reveal-up.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.reveal-fade {
+  opacity: 0;
+  transition: opacity 1.8s ease-out;
+  will-change: opacity;
+}
+.reveal-fade.is-visible {
+  opacity: 1;
+}
+
+.reveal-scale {
+  opacity: 0;
+  transform: scale(0.96);
+  transition: opacity 1.4s cubic-bezier(0.16, 1, 0.3, 1), transform 1.4s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, transform;
+}
+.reveal-scale.is-visible {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* Base Page Load Animation */
+.fade-in {
+  animation: fadeIn 1s ease-out forwards;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #F2ECE4;
+}
+::-webkit-scrollbar-thumb {
+  background: #B8A792;
+  border-radius: 10px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #9D8C79;
+}
