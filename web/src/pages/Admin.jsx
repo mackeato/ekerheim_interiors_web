@@ -15,6 +15,17 @@ export default function Admin({ setCurrentPage }) {
   const [activeTab, setActiveTab] = useState('completed');
   const [manualUrl, setManualUrl] = useState('');
 
+  const formatImg = (img) => {
+    if (!img) return '';
+    if (img.includes('http://localhost:3001/uploads/')) {
+      return img.replace('http://localhost:3001/uploads/', import.meta.env.BASE_URL + 'uploads/');
+    }
+    if (img.startsWith('/uploads/')) {
+      return import.meta.env.BASE_URL + img.slice(1);
+    }
+    return img;
+  };
+
   useEffect(() => {
     if (token) fetchProjects();
   }, [token]);
@@ -228,7 +239,7 @@ export default function Admin({ setCurrentPage }) {
                   <div className="space-y-3 mb-6">
                     {form.images.map((imgUrl, idx) => (
                       <div key={idx} className="flex flex-col sm:flex-row items-center gap-4 bg-white/60 p-3 rounded-2xl border border-white/60 shadow-sm relative">
-                        <img src={imgUrl} className="w-20 h-20 rounded-xl object-cover border border-white/40 bg-[#F2ECE4]" alt="" />
+                        <img src={formatImg(imgUrl)} className="w-20 h-20 rounded-xl object-cover border border-white/40 bg-[#F2ECE4]" alt="" />
                         <div className="flex-1 w-full min-w-0">
                            <p className="text-xs text-[#665E57] truncate font-mono bg-white/40 p-2 rounded-lg border border-white/40">{imgUrl}</p>
                            <div className="flex gap-2 mt-2">
@@ -310,7 +321,7 @@ export default function Admin({ setCurrentPage }) {
           <div className="space-y-6">
             {activeTab === 'completed' && completedProjects.map(p => (
               <div key={p.id} className="rounded-3xl border border-white/50 bg-white/40 backdrop-blur-sm p-6 flex gap-6 items-center shadow-sm hover:shadow-md transition">
-                 <img src={(p.images && p.images[0]) || ''} alt="" className="w-24 h-24 rounded-2xl object-cover border border-white/30 bg-[#F2ECE4]" />
+                 <img src={formatImg((p.images && p.images[0]) || '')} alt="" className="w-24 h-24 rounded-2xl object-cover border border-white/30 bg-[#F2ECE4]" />
                  <div className="flex-1 min-w-0">
                     <h3 className="font-serif text-2xl text-[#4E4E4A] truncate">{p.name}</h3>
                     <p className="text-sm text-[#665E57] mt-1 line-clamp-1">{p.description}</p>

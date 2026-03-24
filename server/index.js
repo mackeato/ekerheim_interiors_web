@@ -19,6 +19,8 @@ const uploadDir = path.join(__dirname, '../web/public/uploads');
 if (!fs.existsSync(uploadDir)) {
   fs.mkdirSync(uploadDir, { recursive: true });
 }
+// Serve the uploads folder globally so GitHub pages can fetch your local images
+app.use('/uploads', express.static(uploadDir));
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -109,7 +111,11 @@ app.post('/api/upload', authenticateToken, upload.array('images', 10), (req, res
 app.get('/api/projects', (req, res) => {
   db.all(`SELECT * FROM projects`, [], (err, rows) => {
     if (err) return res.status(500).json({ error: err.message });
-    res.json(rows.map(r => ({ ...r, images: JSON.parse(r.images || '[]') })));
+    const processed = rows.map(r => {
+      const parsedImgs = JSON.parse(r.images || '[]');
+      return { ...r, images: parsedImgs };
+    });
+    res.json(processed);
   });
 });
 

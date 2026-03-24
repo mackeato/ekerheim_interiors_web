@@ -65,7 +65,22 @@ export default function App() {
   useEffect(() => {
     fetch('http://localhost:3001/api/projects')
       .then(res => res.json())
-      .then(data => setProjects(data))
+      .then(data => {
+        const processedData = data.map(proj => {
+          if (!proj.images) return proj;
+          const newImages = proj.images.map(img => {
+             if (img.includes('http://localhost:3001/uploads/')) {
+                 return img.replace('http://localhost:3001/uploads/', import.meta.env.BASE_URL + 'uploads/');
+             }
+             if (img.startsWith('/uploads/')) {
+                 return import.meta.env.BASE_URL + img.slice(1);
+             }
+             return img;
+          });
+          return { ...proj, images: newImages };
+        });
+        setProjects(processedData);
+      })
       .catch(err => console.error("Error fetching projects", err));
   }, [currentPage]); 
 
